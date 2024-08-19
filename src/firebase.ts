@@ -4,16 +4,15 @@ import {
   initializeFirestore,
   CACHE_SIZE_UNLIMITED,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut as firebaseSignOut } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirebaseConfig } from "./config";
 
 const firebaseConfig = getFirebaseConfig();
-console.log("Firebase Config:", firebaseConfig); // Add this line for debugging
+console.log("Firebase Config:", firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with settings
 const db = initializeFirestore(app, {
   cacheSizeBytes: CACHE_SIZE_UNLIMITED
 });
@@ -21,4 +20,11 @@ const db = initializeFirestore(app, {
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-export { db, auth, storage };
+// Add a custom sign-out function
+const signOut = async () => {
+  await firebaseSignOut(auth);
+  // Clear any persistent auth state
+  await auth.setPersistence('none');
+};
+
+export { db, auth, storage, signOut };

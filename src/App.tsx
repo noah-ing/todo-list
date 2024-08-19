@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { auth } from "./firebase";
+import { auth, signOut } from "./firebase";
 import TaskList from "./components/TaskList";
 import AddTask from "./components/AddTask";
 import EditTask from "./components/EditTask";
@@ -29,6 +29,15 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setUser(null);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -40,7 +49,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="app flex flex-col min-h-screen bg-gray-100">
-        {user && <TopNavBar />}
+        {user && <TopNavBar onSignOut={handleSignOut} />}
         <main className="flex-grow pt-16 px-4">
           <Routes>
             <Route

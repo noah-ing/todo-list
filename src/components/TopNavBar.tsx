@@ -1,21 +1,13 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ListTodo, PlusSquare, User, LogOut, BarChart2 } from "lucide-react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 
-const TopNavBar: React.FC = () => {
+interface TopNavBarProps {
+  onSignOut: () => void;
+}
+
+const TopNavBar: React.FC<TopNavBarProps> = ({ onSignOut }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate("/");
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
 
   return (
     <nav
@@ -65,7 +57,7 @@ const TopNavBar: React.FC = () => {
         <User size={24} />
       </Link>
       <button
-        onClick={handleLogout}
+        onClick={onSignOut}
         style={{
           background: "none",
           border: "none",
