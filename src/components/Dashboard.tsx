@@ -181,4 +181,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;git checkout gh-pages
-mv build/* .
+mv build/* .git commit -m "Update Dashboard component"
