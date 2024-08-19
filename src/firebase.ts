@@ -4,7 +4,7 @@ import {
   initializeFirestore,
   CACHE_SIZE_UNLIMITED,
 } from "firebase/firestore";
-import { getAuth, signOut as firebaseSignOut } from "firebase/auth";
+import { getAuth, signOut as firebaseSignOut, browserSessionPersistence, setPersistence } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirebaseConfig } from "./config";
 
@@ -23,8 +23,8 @@ const storage = getStorage(app);
 // Add a custom sign-out function
 const signOut = async () => {
   await firebaseSignOut(auth);
-  // Clear any persistent auth state
-  await auth.setPersistence('none');
+  // Set persistence to session (clears when the window/tab is closed)
+  await setPersistence(auth, browserSessionPersistence);
 };
 
 export { db, auth, storage, signOut };
