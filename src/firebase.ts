@@ -2,13 +2,20 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   enableMultiTabIndexedDbPersistence,
+  initializeFirestore,
+  CACHE_SIZE_UNLIMITED,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { firebaseConfig } from "./config";
+import { getFirebaseConfig } from "./config";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app = initializeApp(getFirebaseConfig());
+
+// Initialize Firestore with settings
+const db = initializeFirestore(app, {
+  cacheSizeBytes: CACHE_SIZE_UNLIMITED
+});
+
 const auth = getAuth(app);
 const storage = getStorage(app);
 
